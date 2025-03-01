@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: blackmamba
+      MYSQL_DATABASE: komodo
+      MYSQL_USER: blackmamba
+      MYSQL_PASSWORD: blackmamba
+    volumes:
+      - /var/lib/komodo/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - "8001:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
