@@ -1,3 +1,3 @@
 <?php
 
-echo "<h3>DevOps using Komodo...</h3>";
+echo "<h2>DevOps using Komodo.</h2>";
