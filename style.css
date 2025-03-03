@@ -7,16 +7,16 @@
 
 body {
     line-height: 1.6;
-    background-color: #f5f5f5; /* Latar belakang abu-abu terang Material */
-    color: #333;
+    background-color: #f5f5f5; /* Latar belakang abu-abu terang Material (tetap untuk kontras) */
+    color: #333; /* Teks hitam untuk kontras dengan latar kuning */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 header {
-    background-color: #4A148C; /* Ungu gelap primer */
-    color: white;
+    background-color: #fff200; /* Kuning cerah sebagai warna dasar */
+    color: #333; /* Teks hitam untuk kontras */
     padding: 1rem;
     position: fixed;
     width: 100%;
@@ -46,7 +46,7 @@ nav {
 }
 
 .nav-links li a {
-    color: white;
+    color: #333; /* Teks hitam untuk kontras dengan kuning */
     text-decoration: none;
     font-size: 1.1rem;
     padding: 8px 12px;
@@ -54,27 +54,24 @@ nav {
 }
 
 .nav-links li a:hover {
-    color: #E1BEE7; /* Ungu muda untuk hover */
-    background-color: rgba(255, 255, 255, 0.1); /* Efek hover transparan */
+    color: #1a1a1a; /* Abu-abu gelap untuk hover */
+    background-color: rgba(0, 0, 0, 0.1); /* Efek hover transparan */
     border-radius: 4px; /* Sudut bulat Material */
 }
 
-.hero, .services, .testimonials, .contact {
-    flex: 1; /* Memastikan setiap section mengisi tinggi halaman */
-    padding: 5rem 2rem 2rem; /* Padding atas lebih besar untuk jarak dari header, padding bawah untuk footer */
+.hero {
+    background: url('https://via.placeholder.com/1500x600/fff200/333333?text=FitLife') no-repeat center center/cover; /* Latar kuning dengan teks hitam placeholder */
+    color: #333; /* Teks hitam untuk kontras */
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.hero {
-    background: url('https://via.placeholder.com/1500x600/4A148C/ffffff?text=FitLife') no-repeat center center/cover;
-    color: white;
+    text-align: center;
 }
 
 .hero-content {
     padding: 2rem;
-    background-color: rgba(74, 20, 140, 0.7); /* Ungu gelap dengan opacity */
+    background-color: rgba(255, 242, 0, 0.7); /* Kuning cerah dengan opacity */
     border-radius: 4px;
 }
 
@@ -92,8 +89,8 @@ nav {
 }
 
 .cta-button {
-    background-color: #6A1B9A; /* Ungu gelap sekunder */
-    color: white;
+    background-color: #ffeb3b; /* Kuning lebih terang untuk tombol (sesuai Material) */
+    color: #333; /* Teks hitam untuk kontras */
     padding: 12px 24px;
     text-decoration: none;
     border-radius: 4px; /* Sudut bulat Material */
@@ -104,15 +101,24 @@ nav {
 }
 
 .cta-button:hover {
-    background-color: #4A148C; /* Ungu gelap lebih gelap */
+    background-color: #ffd600; /* Kuning lebih gelap untuk hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Bayangan lebih besar saat hover */
+}
+
+.services, .testimonials, .contact {
+    padding: 5rem 2rem 2rem; /* Padding atas lebih besar untuk jarak dari header, padding bawah untuk footer */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .services h2, .testimonials h2, .contact h2 {
     margin-bottom: 2rem;
     font-size: 2rem;
     font-weight: 500;
-    color: #4A148C; /* Ungu gelap untuk judul */
+    color: #333; /* Teks hitam untuk kontras dengan latar */
 }
 
 .services-container, .testimonial-container {
@@ -138,19 +144,19 @@ nav {
 .service-card h3 {
     font-size: 1.5rem;
     font-weight: 500;
-    color: #4A148C;
+    color: #333; /* Teks hitam untuk kontras */
     margin-bottom: 1rem;
 }
 
 .testimonial-card p {
     font-style: italic;
-    color: #666;
+    color: #666; /* Abu-abu gelap untuk kontras */
     margin-bottom: 1rem;
 }
 
 .testimonial-card h4 {
     font-weight: 500;
-    color: #4A148C;
+    color: #333; /* Teks hitam untuk kontras */
 }
 
 .contact form {
@@ -175,14 +181,14 @@ nav {
 }
 
 .contact input:focus, .contact textarea:focus {
-    border-color: #4A148C; /* Ungu gelap saat fokus */
-    box-shadow: 0 0 0 2px rgba(74, 20, 140, 0.2); /* Bayangan fokus Material */
+    border-color: #333; /* Teks hitam saat fokus */
+    box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.2); /* Bayangan fokus Material */
     outline: none;
 }
 
 .contact button {
-    background-color: #6A1B9A; /* Ungu gelap sekunder */
-    color: white;
+    background-color: #ffeb3b; /* Kuning terang untuk tombol */
+    color: #333; /* Teks hitam untuk kontras */
     padding: 12px;
     border: none;
     border-radius: 4px; /* Sudut bulat Material */
@@ -194,13 +200,13 @@ nav {
 }
 
 .contact button:hover {
-    background-color: #4A148C; /* Ungu gelap lebih gelap */
+    background-color: #ffd600; /* Kuning lebih gelap untuk hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Bayangan lebih besar saat hover */
 }
 
 footer {
-    background-color: #4A148C; /* Ungu gelap untuk footer */
-    color: white;
+    background-color: #fff200; /* Kuning cerah untuk footer */
+    color: #333; /* Teks hitam untuk kontras */
     text-align: center;
     padding: 1rem;
     margin-top: auto; /* Memastikan footer tetap di bagian bawah */
