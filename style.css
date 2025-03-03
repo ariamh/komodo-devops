@@ -9,6 +9,9 @@ body {
     line-height: 1.6;
     background-color: #f5f5f5; /* Latar belakang abu-abu terang Material */
     color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -56,14 +59,23 @@ nav {
     border-radius: 4px; /* Sudut bulat Material */
 }
 
-.hero {
-    background: url('https://via.placeholder.com/1500x600/4A148C/ffffff?text=FitLife') no-repeat center center/cover;
-    height: 100vh;
+.hero, .services, .testimonials, .contact {
+    flex: 1; /* Memastikan setiap section mengisi tinggi halaman */
+    padding: 5rem 2rem 2rem; /* Padding atas lebih besar untuk jarak dari header, padding bawah untuk footer */
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
+}
+
+.hero {
+    background: url('https://via.placeholder.com/1500x600/4A148C/ffffff?text=FitLife') no-repeat center center/cover;
     color: white;
+}
+
+.hero-content {
+    padding: 2rem;
+    background-color: rgba(74, 20, 140, 0.7); /* Ungu gelap dengan opacity */
+    border-radius: 4px;
 }
 
 .hero-content h1 {
@@ -96,11 +108,6 @@ nav {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Bayangan lebih besar saat hover */
 }
 
-.services, .testimonials, .contact {
-    padding: 5rem 2rem;
-    text-align: center;
-}
-
 .services h2, .testimonials h2, .contact h2 {
     margin-bottom: 2rem;
     font-size: 2rem;
@@ -108,23 +115,23 @@ nav {
     color: #4A148C; /* Ungu gelap untuk judul */
 }
 
-.services-container {
-    display: flex;
-    justify-content: center;
+.services-container, .testimonial-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.service-card {
+.service-card, .testimonial-card {
     background-color: white;
     padding: 1.5rem;
     border-radius: 4px; /* Sudut bulat Material */
-    width: 300px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan Material */
     transition: box-shadow 0.3s ease; /* Animasi bayangan */
 }
 
-.service-card:hover {
+.service-card:hover, .testimonial-card:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan lebih besar saat hover */
 }
 
@@ -133,26 +140,6 @@ nav {
     font-weight: 500;
     color: #4A148C;
     margin-bottom: 1rem;
-}
-
-.testimonial-container {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.testimonial-card {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 4px; /* Sudut bulat Material */
-    width: 300px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan Material */
-    transition: box-shadow 0.3s ease; /* Animasi bayangan */
-}
-
-.testimonial-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan lebih besar saat hover */
 }
 
 .testimonial-card p {
@@ -216,8 +203,6 @@ footer {
     color: white;
     text-align: center;
     padding: 1rem;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    margin-top: auto; /* Memastikan footer tetap di bagian bawah */
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Bayangan atas Material */
 }
