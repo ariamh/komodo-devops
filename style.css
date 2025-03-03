@@ -12,7 +12,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-/*     overflow-y: auto; /* Scroll hanya muncul jika konten melebihi viewport */ */
+    overflow-y: auto; /* Scroll hanya muncul jika konten melebihi viewport */
 }
 
 header {
@@ -59,13 +59,6 @@ nav {
     color: #1a1a1a; /* Abu-abu gelap untuk hover */
     background-color: rgba(0, 0, 0, 0.1); /* Efek hover transparan */
     border-radius: 4px; /* Sudut bulat Material */
-}
-
-/* Konten utama */
-main {
-    flex: 1; /* Mengisi ruang tersisa antara header dan footer */
-    padding-top: 5rem; /* Jarak dari header fixed */
-    padding-bottom: 2rem; /* Jarak dari footer */
 }
 
 .hero {
