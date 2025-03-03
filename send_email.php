@@ -22,10 +22,10 @@ try {
     exit();
 }
 
-$smtp_host = $_ENV['SMTP_HOST'] ?? 'sandbox.smtp.mailtrap.io';
-$smtp_port = $_ENV['SMTP_PORT'] ?? 2525;
-$smtp_username = $_ENV['SMTP_USERNAME'] ?? 'b8e05499aa78e5';
-$smtp_password = $_ENV['SMTP_PASSWORD'] ?? 'fd2e5dfa5ac1fa';
+$smtp_host = $_ENV['SMTP_HOST'];
+$smtp_port = $_ENV['SMTP_PORT'];
+$smtp_username = $_ENV['SMTP_USERNAME'];
+$smtp_password = $_ENV['SMTP_PASSWORD'];
 
 function checkRateLimit($email) {
     $max_emails = 3;
