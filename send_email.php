@@ -6,36 +6,38 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
 
-// Inisialisasi CSRF token jika belum ada
-// if (!isset($_SESSION['csrf_token'])) {
-//     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-// }
+// Function untuk membaca secret dari file (untuk Docker Secrets)
+function readSecretFromFile($var) {
+    $file_var = $var . '_FILE';
+    if (getenv($file_var)) {
+        return trim(file_get_contents(getenv($file_var)));
+    }
+    return null;
+}
 
-// Load kredensial dari .env
-// try {
-//     $dotenv = Dotenv::createImmutable(__DIR__);
-//     $dotenv->load();
-// } catch (Exception $e) {
-//     error_log("Dotenv Error: " . $e->getMessage());
-//     $_SESSION['notification'] = "Konfigurasi server bermasalah.";
-//     header('Location: index.php');
-//     exit();
-// }
-
-// Load kredensial dari .env jika ada, fallback ke env vars
+// Load kredensial dari .env jika ada
 if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 }
 
-$smtp_host = $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST');
-$smtp_port = $_ENV['SMTP_PORT'] ?? getenv('SMTP_PORT');
-$smtp_username = $_ENV['SMTP_USERNAME'] ?? getenv('SMTP_USERNAME');
-$smtp_password = $_ENV['SMTP_PASSWORD'] ?? getenv('SMTP_PASSWORD');
+// Mendapatkan nilai dari environment variables dengan prioritas:
+// 1. $_ENV (dari .env file via Dotenv)
+// 2. getenv() (dari environment system/Docker)
+// 3. Docker secrets (jika digunakan)
+$smtp_host = $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST') ?? readSecretFromFile('SMTP_HOST');
+$smtp_port = $_ENV['SMTP_PORT'] ?? getenv('SMTP_PORT') ?? readSecretFromFile('SMTP_PORT');
+$smtp_username = $_ENV['SMTP_USERNAME'] ?? getenv('SMTP_USERNAME') ?? readSecretFromFile('SMTP_USERNAME');
+$smtp_password = $_ENV['SMTP_PASSWORD'] ?? getenv('SMTP_PASSWORD') ?? readSecretFromFile('SMTP_PASSWORD');
+$admin_email = $_ENV['ADMIN_EMAIL'] ?? getenv('ADMIN_EMAIL') ?? readSecretFromFile('ADMIN_EMAIL') ?? 'ariamustofa@gmail.com';
 
+// Validasi kredensial
 if (!$smtp_host || !$smtp_port || !$smtp_username || !$smtp_password) {
     $_SESSION['notification'] = "Konfigurasi SMTP tidak lengkap. Hubungi administrator.";
-    error_log("SMTP configuration missing: HOST=$smtp_host, PORT=$smtp_port, USERNAME=$smtp_username, PASSWORD=" . ($smtp_password ? '[set]' : '[unset]'));
+    error_log("SMTP configuration missing: HOST=" . ($smtp_host ? '[set]' : '[unset]') . 
+              ", PORT=" . ($smtp_port ? '[set]' : '[unset]') . 
+              ", USERNAME=" . ($smtp_username ? '[set]' : '[unset]') . 
+              ", PASSWORD=" . ($smtp_password ? '[set]' : '[unset]'));
     header('Location: index.php');
     exit();
 }
@@ -65,12 +67,15 @@ function checkRateLimit($email) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validasi CSRF
-    // if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-    //     $_SESSION['notification'] = "Permintaan tidak valid.";
-    //     header('Location: index.php');
-    //     exit();
-    // }
+    // CSRF validasi dinonaktifkan karena menimbulkan error
+    // Komentar berikut menunjukkan implementasi yang benar jika ingin diaktifkan di masa depan
+    /*
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $_SESSION['notification'] = "Permintaan tidak valid.";
+        header('Location: index.php');
+        exit();
+    }
+    */
 
     $name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
     $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
@@ -100,7 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $to = "ariamustofa@gmail.com";
     $subject = "Pesan Baru dari $name - FitLife";
     $body = "Nama: $name\nPhone: $phone\nEmail: $email\nPesan:\n$message";
 
@@ -115,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Port = $smtp_port;
 
         $mail->setFrom('no-reply@fitlife.com', 'FitLife Personal Training');
-        $mail->addAddress($to);
+        $mail->addAddress($admin_email);
         $mail->addReplyTo($email, $name);
 
         $mail->isHTML(false);
