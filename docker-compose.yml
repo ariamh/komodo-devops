@@ -1,17 +1,19 @@
+version: '3.8'
+
 services:
   db:
-    image: postgres:9.6-alpine  # Gunakan versi yang kompatibel dengan CPU Anda (x86-64 dasar)
+    image: postgres:9.6-alpine
     restart: always
     environment:
-      POSTGRES_USER: blackmamba  # Username untuk PostgreSQL
-      POSTGRES_PASSWORD: blackmamba  # Password untuk user
-      POSTGRES_DB: komodo  # Nama database default
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - /var/lib/komodo/postgres:/var/lib/postgresql/data  # Path volume untuk data PostgreSQL
+      - ${POSTGRES_DATA_PATH:-/var/lib/komodo/postgres}:/var/lib/postgresql/data
     ports:
-      - "5432:5432"  # Port default PostgreSQL
+      - "${POSTGRES_PORT:-5432}:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U blackmamba -d komodo"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -20,9 +22,9 @@ services:
     image: dpage/pgadmin4:latest
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@fitlife.com  # Email untuk login pgAdmin
-      PGADMIN_DEFAULT_PASSWORD: blackmamba  # Password untuk login pgAdmin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     ports:
-      - "8001:80"  # Memetakan port 8001 di host ke port 80 di pgAdmin (sama seperti port phpMyAdmin sebelumnya)
+      - "${PGADMIN_PORT:-8001}:80"
     depends_on:
-      - db  # Memastikan pgAdmin hanya mulai setelah PostgreSQL siap
+      - db
