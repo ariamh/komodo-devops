@@ -24,28 +24,6 @@ function displayNotification() {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        .notification {
-            padding: 15px;
-            background-color: #4CAF50;
-            color: white;
-            margin-top: 55px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            animation: fadeOut 5s forwards;
-        }
-        
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-    </style>
 </head>
 <body>
     <?php displayNotification(); ?>
@@ -61,14 +39,16 @@ function displayNotification() {
         </nav>
     </header>
 
-    <!-- Section Beranda -->
-    <section id="home" class="hero min-h-screen flex items-center justify-center text-center">
-        <div class="hero-content p-6 bg-purple-600 bg-opacity-70 rounded-lg">
-            <h1 class="text-4xl font-bold mb-4">Transformasi Tubuh Anda Bersama FitLife</h1>
-            <p class="text-xl mb-6">Personal Trainer Profesional untuk Hasil Maksimal</p>
-            <a href="contact.php" class="cta-button">Hubungi Sekarang</a>
-        </div>
-    </section>
+    <main>
+        <!-- Section Beranda -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Transformasi Tubuh Anda Bersama FitLife</h1>
+                <p>Personal Trainer Profesional untuk Hasil Maksimal</p>
+                <a href="contact.php" class="cta-button">Hubungi Sekarang</a>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer>
