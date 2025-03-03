@@ -14,7 +14,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /var/www
 
 # Copy project files
-COPY ./index.php ./contact.php ./send_email.php ./services.php ./testimonials.php ./style.css ./.env ./
+COPY ./index.php ./contact.php ./send_email.php ./services.php ./testimonials.php ./style.css ./
 
 # Create composer.json if not exists
 RUN if [ ! -f composer.json ]; then \
