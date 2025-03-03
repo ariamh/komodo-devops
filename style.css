@@ -12,6 +12,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-y: auto; /* Scroll hanya muncul jika konten melebihi viewport */
 }
 
 header {
@@ -60,10 +61,16 @@ nav {
     border-radius: 4px; /* Sudut bulat Material */
 }
 
+/* Konten utama */
+main {
+    flex: 1; /* Mengisi ruang tersisa antara header dan footer */
+    padding-top: 5rem; /* Jarak dari header fixed */
+    padding-bottom: 2rem; /* Jarak dari footer */
+}
+
 .hero {
     background: url('https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
     color: #333; /* Teks hitam untuk kontras */
-    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -108,7 +115,6 @@ nav {
 
 .services, .testimonials, .contact {
     padding: 5rem 2rem 2rem; /* Padding atas lebih besar untuk jarak dari header, padding bawah untuk footer */
-    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -211,6 +217,6 @@ footer {
     color: #333; /* Teks hitam untuk kontras */
     text-align: center;
     padding: 1rem;
-    margin-top: auto; /* Memastikan footer tetap di bagian bawah */
+    margin-top: auto; /* Footer tetap di bawah */
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Bayangan atas Material */
 }
