@@ -29,7 +29,7 @@ function displayNotification() {
             padding: 15px;
             background-color: #4CAF50;
             color: white;
-            margin-top: 50px;
+            margin-top: 55px;
             margin-bottom: 15px;
             border-radius: 4px;
             position: fixed;
