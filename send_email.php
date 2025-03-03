@@ -1,18 +1,21 @@
 <?php
+session_start();
+
 require 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $phone = htmlspecialchars($_POST['phone']);
-    $message = htmlspecialchars($_POST['message']);
+    // Cek apakah field ada sebelum mencoba mengaksesnya
+    $name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
+    $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
+    $phone = isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '';
+    $message = isset($_POST['message']) ? htmlspecialchars($_POST['message']) : '';
     
     // Konfigurasi SMTP Mailtrap
     $smtp_host = 'sandbox.smtp.mailtrap.io';
-    $smtp_port = 2525; // Dapat menggunakan 25, 465, 587, atau 2525
+    $smtp_port = 2525;
     $smtp_username = 'b8e05499aa78e5';
     $smtp_password = 'fd2e5dfa5ac1fa';
     
@@ -37,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->SMTPAuth = true;
         $mail->Username = $smtp_username;
         $mail->Password = $smtp_password;
-        $mail->SMTPSecure = 'tls'; // Opsional (STARTTLS pada semua port)
+        $mail->SMTPSecure = 'tls';
         $mail->Port = $smtp_port;
         
         // Penerima
@@ -51,15 +54,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Body = $body;
         
         $mail->send();
-        // Redirect ke halaman beranda dengan pesan sukses
-        // Menggunakan session untuk menyimpan pesan notifikasi
-        session_start();
+        
+        // Simpan notifikasi sukses
         $_SESSION['notification'] = "Pesan Anda berhasil dikirim! Kami akan segera menghubungi Anda.";
         header('Location: index.php');
         exit();
     } catch (Exception $e) {
-        // Redirect ke halaman beranda dengan pesan error
-        session_start();
+        // Simpan notifikasi error
         $_SESSION['notification'] = "Maaf, terjadi kesalahan saat mengirim pesan: " . $mail->ErrorInfo;
         header('Location: index.php');
         exit();
