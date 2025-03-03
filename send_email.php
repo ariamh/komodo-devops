@@ -7,9 +7,9 @@ use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
 
 // Inisialisasi CSRF token jika belum ada
-if (!isset($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
+// if (!isset($_SESSION['csrf_token'])) {
+//     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+// }
 
 // Load kredensial dari .env
 try {
@@ -53,11 +53,11 @@ function checkRateLimit($email) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validasi CSRF
-    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        $_SESSION['notification'] = "Permintaan tidak valid.";
-        header('Location: index.php');
-        exit();
-    }
+    // if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    //     $_SESSION['notification'] = "Permintaan tidak valid.";
+    //     header('Location: index.php');
+    //     exit();
+    // }
 
     $name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
     $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
