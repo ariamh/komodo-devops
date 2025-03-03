@@ -28,10 +28,17 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv->load();
 }
 
-$smtp_host = $_ENV['SMTP_HOST'];
-$smtp_port = $_ENV['SMTP_PORT'];
-$smtp_username = $_ENV['SMTP_USERNAME'];
-$smtp_password = $_ENV['SMTP_PASSWORD'];
+$smtp_host = $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST');
+$smtp_port = $_ENV['SMTP_PORT'] ?? getenv('SMTP_PORT');
+$smtp_username = $_ENV['SMTP_USERNAME'] ?? getenv('SMTP_USERNAME');
+$smtp_password = $_ENV['SMTP_PASSWORD'] ?? getenv('SMTP_PASSWORD');
+
+if (!$smtp_host || !$smtp_port || !$smtp_username || !$smtp_password) {
+    $_SESSION['notification'] = "Konfigurasi SMTP tidak lengkap. Hubungi administrator.";
+    error_log("SMTP configuration missing: HOST=$smtp_host, PORT=$smtp_port, USERNAME=$smtp_username, PASSWORD=" . ($smtp_password ? '[set]' : '[unset]'));
+    header('Location: index.php');
+    exit();
+}
 
 function checkRateLimit($email) {
     $max_emails = 3;
