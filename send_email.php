@@ -4,20 +4,28 @@ require 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+// Inisialisasi CSRF token jika belum ada
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
-$smtp_host = $_ENV['SMTP_HOST'];
-$smtp_port = $_ENV['SMTP_PORT'];
-$smtp_username = $_ENV['SMTP_USERNAME'];
-$smtp_password = $_ENV['SMTP_PASSWORD'];
+// Load kredensial dari .env
+try {
+    $dotenv = Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+} catch (Exception $e) {
+    error_log("Dotenv Error: " . $e->getMessage());
+    $_SESSION['notification'] = "Konfigurasi server bermasalah.";
+    header('Location: index.php');
+    exit();
+}
 
-// Load kredensial dari .env (opsional, jika pakai dotenv)
-// $smtp_host = 'sandbox.smtp.mailtrap.io';
-// $smtp_port = 2525;
-// $smtp_username = 'b8e05499aa78e5';
-// $smtp_password = 'fd2e5dfa5ac1fa';
+$smtp_host = $_ENV['SMTP_HOST'] ?? 'sandbox.smtp.mailtrap.io';
+$smtp_port = $_ENV['SMTP_PORT'] ?? 2525;
+$smtp_username = $_ENV['SMTP_USERNAME'] ?? 'b8e05499aa78e5';
+$smtp_password = $_ENV['SMTP_PASSWORD'] ?? 'fd2e5dfa5ac1fa';
 
 function checkRateLimit($email) {
     $max_emails = 3;
@@ -62,12 +70,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: index.php');
         exit();
     }
+
     if (!preg_match('/^[0-9+-\s]{8,15}$/', $phone)) {
         $_SESSION['notification'] = "Nomor telepon tidak valid.";
         header('Location: index.php');
         exit();
     }
-    if (strlen($name) > 50 || strlen($message) > 1000) {
+
+    if (strlen($name) > 15 || strlen($message) > 50) {
         $_SESSION['notification'] = "Nama atau pesan terlalu panjang.";
         header('Location: index.php');
         exit();
@@ -91,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->SMTPSecure = 'tls';
         $mail->Port = $smtp_port;
 
-        $mail->setFrom('no-reply@fitlife.com', 'FitLife System');
+        $mail->setFrom('no-reply@fitlife.com', 'FitLife Personal Training');
         $mail->addAddress($to);
         $mail->addReplyTo($email, $name);
 
