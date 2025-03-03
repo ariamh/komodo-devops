@@ -7,6 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = htmlspecialchars($_POST['name']);
     $email = htmlspecialchars($_POST['email']);
+    $phone = htmlspecialchars($_POST['phone']);
     $message = htmlspecialchars($_POST['message']);
     
     // Konfigurasi SMTP Mailtrap
@@ -18,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Konfigurasi email
     $to = "ariamustofa@gmail.com";
     $subject = "Pesan Baru dari $name - FitLife";
-    $body = "Nama: $name\nEmail: $email\nPesan:\n$message";
+    $body = "Nama: $name\nPhone: $phone\nEmail: $email\nPesan:\n$message";
     $headers = [
         'From' => $email,
         'Reply-To' => $email,
