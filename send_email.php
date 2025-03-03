@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    if (!preg_match('/^[0-9+-\s]{8,15}$/', $phone)) {
+    if (!preg_match('/^[0-9+\-\s]{8,15}$/', $phone)) {
         $_SESSION['notification'] = "Nomor telepon tidak valid.";
         header('Location: index.php');
         exit();
