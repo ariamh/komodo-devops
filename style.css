@@ -63,8 +63,8 @@ nav {
 
 main {
     flex: 1; /* Mengisi ruang tersisa antara header dan footer */
-    padding-top: 5rem; /* Jarak dari header fixed */
-    padding-bottom: 2rem;
+/*     padding-top: 5rem; */
+/*     padding-bottom: 2rem; */
     display: flex; /* Membuat main sebagai flex container */
     flex-direction: column; /* Section diatur secara vertikal */
     justify-content: center; /* Konten utama di tengah vertikal */
