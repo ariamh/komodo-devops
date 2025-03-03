@@ -50,11 +50,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Body = $body;
         
         $mail->send();
-        echo "<p>Pesan Anda berhasil dikirim! Kami akan segera menghubungi Anda.</p>";
+        // Redirect ke halaman beranda dengan pesan sukses
+        // Menggunakan session untuk menyimpan pesan notifikasi
+        session_start();
+        $_SESSION['notification'] = "Pesan Anda berhasil dikirim! Kami akan segera menghubungi Anda.";
+        header('Location: index.php');
+        exit();
     } catch (Exception $e) {
-        echo "<p>Maaf, terjadi kesalahan saat mengirim pesan: {$mail->ErrorInfo}</p>";
+        // Redirect ke halaman beranda dengan pesan error
+        session_start();
+        $_SESSION['notification'] = "Maaf, terjadi kesalahan saat mengirim pesan: " . $mail->ErrorInfo;
+        header('Location: index.php');
+        exit();
     }
 } else {
-    echo "<p>Metode pengiriman tidak valid.</p>";
+    // Redirect jika metode tidak valid
+    header('Location: index.php');
+    exit();
 }
 ?>

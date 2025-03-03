@@ -1,16 +1,47 @@
+<?php
+// Mulai session
+session_start();
+
+// Fungsi untuk menampilkan notifikasi
+function displayNotification() {
+    if (isset($_SESSION['notification'])) {
+        $message = $_SESSION['notification'];
+        echo '<div class="notification">' . $message . '</div>';
+        
+        // Hapus notifikasi setelah ditampilkan
+        unset($_SESSION['notification']);
+    }
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitLife Personal Training - Beranda</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <!-- Head content -->
+    <style>
+        .notification {
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: fadeOut 5s forwards;
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
+    <?php displayNotification(); ?>
     <header>
         <nav>
             <div class="logo">FitLife</div>
