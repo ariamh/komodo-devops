@@ -61,14 +61,16 @@ function displayNotification() {
         </nav>
     </header>
 
-    <!-- Section Beranda -->
-    <section id="home" class="hero min-h-screen flex items-center justify-center text-center">
-        <div class="hero-content p-6 bg-purple-600 bg-opacity-70 rounded-lg">
-            <h1 class="text-4xl font-bold mb-4">Transformasi Tubuh Anda Bersama FitLife</h1>
-            <p class="text-xl mb-6">Personal Trainer Profesional untuk Hasil Maksimal</p>
-            <a href="contact.php" class="cta-button">Hubungi Sekarang</a>
-        </div>
-    </section>
+    <main>
+        <!-- Section Beranda -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Transformasi Tubuh Anda Bersama FitLife</h1>
+                <p>Personal Trainer Profesional untuk Hasil Maksimal</p>
+                <a href="contact.php" class="cta-button">Hubungi Sekarang</a>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer>
