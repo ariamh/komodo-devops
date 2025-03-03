@@ -1,15 +1,15 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:9.6-alpine  # Gunakan versi yang kompatibel dengan CPU Anda (x86-64 dasar)
     restart: always
     environment:
-      POSTGRES_USER: blackmamba
-      POSTGRES_PASSWORD: blackmamba
-      POSTGRES_DB: komodo
+      POSTGRES_USER: blackmamba  # Username untuk PostgreSQL
+      POSTGRES_PASSWORD: blackmamba  # Password untuk user
+      POSTGRES_DB: komodo  # Nama database default
     volumes:
-      - /var/lib/komodo/postgres:/var/lib/postgresql/data
+      - /var/lib/komodo/postgres:/var/lib/postgresql/data  # Path volume untuk data PostgreSQL
     ports:
-      - "5432:5432"
+      - "5432:5432"  # Port default PostgreSQL
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U blackmamba -d komodo"]
       interval: 5s
@@ -23,6 +23,6 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@fitlife.com  # Email untuk login pgAdmin
       PGADMIN_DEFAULT_PASSWORD: blackmamba  # Password untuk login pgAdmin
     ports:
-      - "8001:80"  # Memetakan port 8001 di host ke port 80 di pgAdmin
+      - "8001:80"  # Memetakan port 8001 di host ke port 80 di pgAdmin (sama seperti port phpMyAdmin sebelumnya)
     depends_on:
-      - db
+      - db  # Memastikan pgAdmin hanya mulai setelah PostgreSQL siap
