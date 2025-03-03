@@ -28,6 +28,7 @@
         <div class="max-w-lg mx-auto">
             <h2 class="text-3xl font-bold text-center mb-12">Hubungi Kami</h2>
             <form action="send_email.php" method="POST" class="bg-white p-6 rounded-lg shadow-md">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <input type="text" name="name" placeholder="Nama Anda" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <input type="tel" name="phone" id="phone" placeholder="Telepon Anda" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <input type="email" name="email" placeholder="Email Anda" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
