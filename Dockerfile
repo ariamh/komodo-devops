@@ -14,11 +14,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /var/www
 
 # Copy project files
-COPY ./index.php ./contact.php ./send_email.php ./services.php ./testimonials.php ./style.css ./
+COPY ./index.php ./contact.php ./send_email.php ./services.php ./testimonials.php ./style.css ./.env ./
 
 # Create composer.json if not exists
 RUN if [ ! -f composer.json ]; then \
-    echo '{"require": {"phpmailer/phpmailer": "^6.8"}}' > composer.json; \
+    echo '{"require": {"phpmailer/phpmailer": "^6.8", "vlucas/phpdotenv": "^5.5"}}' > composer.json; \
     fi
 
 # Install dependencies with Composer
