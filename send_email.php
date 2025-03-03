@@ -1,73 +1,88 @@
 <?php
 session_start();
-
 require 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Fungsi untuk memeriksa batas pengiriman berdasarkan email
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$smtp_host = $_ENV['SMTP_HOST'];
+$smtp_port = $_ENV['SMTP_PORT'];
+$smtp_username = $_ENV['SMTP_USERNAME'];
+$smtp_password = $_ENV['SMTP_PASSWORD'];
+
+// Load kredensial dari .env (opsional, jika pakai dotenv)
+// $smtp_host = 'sandbox.smtp.mailtrap.io';
+// $smtp_port = 2525;
+// $smtp_username = 'b8e05499aa78e5';
+// $smtp_password = 'fd2e5dfa5ac1fa';
+
 function checkRateLimit($email) {
-    $max_emails = 3; // Maksimum email per jam
-    $time_window = 3600; // 1 jam dalam detik
+    $max_emails = 3;
+    $time_window = 3600;
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $session_key = 'email_limits_' . md5($email . $ip);
 
-    // Gunakan email sebagai kunci di session
-    $session_key = 'email_limits_' . md5($email); // md5 untuk menghindari karakter khusus
-
-    // Inisialisasi session jika belum ada untuk email ini
     if (!isset($_SESSION[$session_key])) {
-        $_SESSION[$session_key] = [
-            'count' => 0,
-            'first_time' => time()
-        ];
+        $_SESSION[$session_key] = ['count' => 0, 'first_time' => time()];
     }
 
     $limit_data = &$_SESSION[$session_key];
-
-    // Reset hitungan jika waktu jendela sudah lewat
     if (time() - $limit_data['first_time'] > $time_window) {
         $limit_data['count'] = 0;
         $limit_data['first_time'] = time();
     }
 
-    // Cek apakah sudah melebihi batas
     if ($limit_data['count'] >= $max_emails) {
-        $_SESSION['notification'] = "Batas pengiriman untuk email ini tercapai. Silakan coba lagi nanti.";
+        $_SESSION['notification'] = "Batas pengiriman tercapai.";
+        header('Location: index.php');
+        exit();
+    }
+    return true;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validasi CSRF
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $_SESSION['notification'] = "Permintaan tidak valid.";
         header('Location: index.php');
         exit();
     }
 
-    return true; // Lanjutkan jika belum melebihi batas
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Cek apakah field ada sebelum mencoba mengaksesnya
     $name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
     $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
     $phone = isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '';
     $message = isset($_POST['message']) ? htmlspecialchars($_POST['message']) : '';
-    
-    // Cek batas pengiriman berdasarkan email
-    if (!checkRateLimit($email)) {
-        exit(); // Keluar jika batas tercapai
+
+    // Validasi input
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['notification'] = "Format email tidak valid.";
+        header('Location: index.php');
+        exit();
+    }
+    if (!preg_match('/^[0-9+-\s]{8,15}$/', $phone)) {
+        $_SESSION['notification'] = "Nomor telepon tidak valid.";
+        header('Location: index.php');
+        exit();
+    }
+    if (strlen($name) > 50 || strlen($message) > 1000) {
+        $_SESSION['notification'] = "Nama atau pesan terlalu panjang.";
+        header('Location: index.php');
+        exit();
     }
 
-    // Konfigurasi SMTP Mailtrap
-    $smtp_host = 'sandbox.smtp.mailtrap.io';
-    $smtp_port = 2525;
-    $smtp_username = 'b8e05499aa78e5';
-    $smtp_password = 'fd2e5dfa5ac1fa';
-    
-    // Konfigurasi email
+    if (!checkRateLimit($email)) {
+        exit();
+    }
+
     $to = "ariamustofa@gmail.com";
     $subject = "Pesan Baru dari $name - FitLife";
     $body = "Nama: $name\nPhone: $phone\nEmail: $email\nPesan:\n$message";
-    
-    // Menggunakan PHPMailer untuk mengirim email melalui SMTP Mailtrap
+
     $mail = new PHPMailer(true);
-    
     try {
-        // Konfigurasi server
         $mail->isSMTP();
         $mail->Host = $smtp_host;
         $mail->SMTPAuth = true;
@@ -75,35 +90,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Password = $smtp_password;
         $mail->SMTPSecure = 'tls';
         $mail->Port = $smtp_port;
-        
-        // Penerima
-        $mail->setFrom($email, $name);
+
+        $mail->setFrom('no-reply@fitlife.com', 'FitLife System');
         $mail->addAddress($to);
         $mail->addReplyTo($email, $name);
-        
-        // Konten
+
         $mail->isHTML(false);
         $mail->Subject = $subject;
         $mail->Body = $body;
-        
-        $mail->send();
-        
-        // Tambah hitungan email setelah berhasil dikirim
-        $session_key = 'email_limits_' . md5($email);
-        $_SESSION[$session_key]['count']++;
 
-        // Simpan notifikasi sukses
-        $_SESSION['notification'] = "Pesan Anda berhasil dikirim! Kami akan segera menghubungi Anda.";
+        $mail->send();
+
+        $session_key = 'email_limits_' . md5($email . $_SERVER['REMOTE_ADDR']);
+        $_SESSION[$session_key]['count']++;
+        session_regenerate_id(true);
+
+        $_SESSION['notification'] = "Pesan Anda berhasil dikirim!";
         header('Location: index.php');
         exit();
     } catch (Exception $e) {
-        // Simpan notifikasi error
-        $_SESSION['notification'] = "Maaf, terjadi kesalahan saat mengirim pesan: " . $mail->ErrorInfo;
+        $_SESSION['notification'] = "Maaf, terjadi kesalahan saat mengirim pesan.";
+        error_log("PHPMailer Error: " . $mail->ErrorInfo);
         header('Location: index.php');
         exit();
     }
 } else {
-    // Redirect jika metode tidak valid
     header('Location: index.php');
     exit();
 }
