@@ -1,0 +1,11 @@
+{
+    "name": "ariam/komodo-devops",
+    "autoload": {
+        "psr-4": {
+            "Ariam\\KomodoDevops\\": "src/"
+        }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}
