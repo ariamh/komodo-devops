@@ -29,6 +29,7 @@
             <h2 class="text-3xl font-bold text-center mb-12">Hubungi Kami</h2>
             <form action="send_email.php" method="POST" class="bg-white p-6 rounded-lg shadow-md">
                 <input type="text" name="name" placeholder="Nama Anda" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <input type="tel" name="phone" id="phone" placeholder="Telepon Anda" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <input type="email" name="email" placeholder="Email Anda" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <textarea name="message" placeholder="Pesan Anda" required class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 h-32"></textarea>
                 <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold w-full">Kirim Pesan</button>
