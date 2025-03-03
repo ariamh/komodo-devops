@@ -1,4 +1,9 @@
 <?php
+require 'vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = htmlspecialchars($_POST['name']);
     $email = htmlspecialchars($_POST['email']);
@@ -11,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $smtp_password = 'fd2e5dfa5ac1fa';
     
     // Konfigurasi email
-    $to = "ariamustofa@gmail.com"; // Ganti dengan email tujuan
+    $to = "ariamustofa@gmail.com";
     $subject = "Pesan Baru dari $name - FitLife";
     $body = "Nama: $name\nEmail: $email\nPesan:\n$message";
     $headers = [
@@ -22,11 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ];
     
     // Menggunakan PHPMailer untuk mengirim email melalui SMTP Mailtrap
-    require 'vendor/autoload.php'; // Pastikan PHPMailer sudah diinstall via Composer
-    
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
-    
     $mail = new PHPMailer(true);
     
     try {
