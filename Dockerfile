@@ -2,7 +2,7 @@ FROM php:latest
 
 WORKDIR /var/www
 
-COPY ./index.php ./style.css ./send_email.php .
+COPY ./index.php ./contact.php ./send_email.php ./services.php ./testimonials.php ./style.css .
 
 EXPOSE 80
 
