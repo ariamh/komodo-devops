@@ -24,28 +24,6 @@ function displayNotification() {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        .notification {
-            padding: 15px;
-            background-color: #4CAF50;
-            color: white;
-            margin-top: 55px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            animation: fadeOut 5s forwards;
-        }
-        
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-    </style>
 </head>
 <body>
     <?php displayNotification(); ?>
