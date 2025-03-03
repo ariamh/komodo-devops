@@ -12,14 +12,20 @@ use Dotenv\Dotenv;
 // }
 
 // Load kredensial dari .env
-try {
+// try {
+//     $dotenv = Dotenv::createImmutable(__DIR__);
+//     $dotenv->load();
+// } catch (Exception $e) {
+//     error_log("Dotenv Error: " . $e->getMessage());
+//     $_SESSION['notification'] = "Konfigurasi server bermasalah.";
+//     header('Location: index.php');
+//     exit();
+// }
+
+// Load kredensial dari .env jika ada, fallback ke env vars
+if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv::createImmutable(__DIR__);
     $dotenv->load();
-} catch (Exception $e) {
-    error_log("Dotenv Error: " . $e->getMessage());
-    $_SESSION['notification'] = "Konfigurasi server bermasalah.";
-    header('Location: index.php');
-    exit();
 }
 
 $smtp_host = $_ENV['SMTP_HOST'];
